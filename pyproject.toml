@@ -13,6 +13,7 @@ flake8 = "^6.1.0"
 mypy = "^1.6.1"
 black = "^23.10.0"
 isort = "^5.12.0"
+pre-commit = "^3.5.0"
 
 
 [build-system]
@@ -33,4 +34,4 @@ disallow_untyped_defs = true
 check_untyped_defs = true
 ignore_missing_imports = true
 explicit_package_bases = true
-exclude = ['venv']
+exclude = ['alembic', 'venv']
