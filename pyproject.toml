@@ -14,6 +14,7 @@ mypy = "^1.6.1"
 black = "^23.10.0"
 isort = "^5.12.0"
 pre-commit = "^3.5.0"
+loguru = "^0.7.2"
 
 
 [build-system]
@@ -27,11 +28,3 @@ lines_after_imports = 2
 
 [tool.black]
 line-length = 120
-
-[tool.mypy]
-python_version = 3.11
-disallow_untyped_defs = true
-check_untyped_defs = true
-ignore_missing_imports = true
-explicit_package_bases = true
-exclude = ['alembic', 'venv']

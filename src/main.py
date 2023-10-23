@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from fastapi import FastAPI
+
+from src.config import logger
 
 
 app = FastAPI(title="AuthenticationSync API", version="1.0.0")
@@ -13,5 +17,8 @@ async def hella() -> str:
 async def startup() -> None:
     """Executed before the server starts"""
 
-    # start_time = datetime.now()
-    # end_time = datetime.now()
+    start_time = datetime.now()
+
+    end_time = datetime.now()
+
+    logger.info(f"Startup time: {end_time - start_time}")
