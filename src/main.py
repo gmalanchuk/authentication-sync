@@ -7,7 +7,7 @@ app = FastAPI(title="AuthenticationSync API", version='1.0.0')
 
 
 @app.get('/')
-async def hella():
+async def hella() -> str:
     return 'hella'
 
 
