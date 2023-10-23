@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "authentication-sync"
+version = "0.1.0"
+description = ""
+authors = ["Grigory Malanchuk <grishamalanchuk@gmail.com>"]
+readme = "README.md"
+packages = [{include = "authentication_sync"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.104.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
