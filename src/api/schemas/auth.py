@@ -8,8 +8,7 @@ class UserRegistrationRequestSchema(BaseModel):
     username: str
     email: EmailStr
     name: str
-    hashed_password: str
-    # _password: str
+    password: str
 
     @field_validator("username")
     def validate_username(cls, username: str) -> str | NoReturn:
