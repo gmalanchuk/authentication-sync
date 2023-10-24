@@ -13,8 +13,8 @@ class AuthService:
     async def registration(self, user: UserRegistrationRequestSchema) -> UserRegistrationResponseSchema:
         user_dict = user.model_dump()
 
-        await self.auth_validator.already_exists_username_email_validators(
-            username=user_dict["username"], email=user_dict["email"]
+        await self.auth_validator.already_exists_auth_validator(
+            {"username": user_dict["username"], "email": user_dict["email"]}
         )
 
         user_dict["hashed_password"] = self.hash_password.create_hash(user_dict.pop("password"))

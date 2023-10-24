@@ -10,14 +10,10 @@ class AuthValidator(BaseValidator):
     def __init__(self) -> None:
         self.auth_repository = AuthRepository()
 
-    async def already_exists_username_validator(self, username: str) -> None | NoReturn:
-        exists = await self.auth_repository.get_one(model_field="username", value=username)
-        return await self.already_exists_validator(exists=exists, model_name=self.model_name, model_field="username")
+    async def already_exists_auth_validator(self, fields: dict) -> None | NoReturn:
+        """fields is dict, where key = model_field and value = value from that model_field"""
 
-    async def already_exists_email_validator(self, email: str) -> None | NoReturn:
-        exists = await self.auth_repository.get_one(model_field="email", value=email)
-        return await self.already_exists_validator(exists=exists, model_name=self.model_name, model_field="email")
-
-    async def already_exists_username_email_validators(self, username: str, email: str) -> None:
-        await self.already_exists_username_validator(username=username)
-        await self.already_exists_email_validator(email=email)
+        for key, value in fields.items():
+            exists = await self.auth_repository.get_one(model_field=key, value=value)
+            await self.already_exists_validator(exists=exists, model_name=self.model_name, model_field=key)
+        return None
