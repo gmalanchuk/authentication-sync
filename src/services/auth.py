@@ -1,4 +1,4 @@
-from src.api.schemas.auth import UserRegistrationRequestSchema, UserRegistrationResponseSchema
+from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
 from src.config import logger
 from src.repositories.auth import AuthRepository
 from src.services.validators.auth import AuthValidator
