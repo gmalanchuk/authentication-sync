@@ -5,7 +5,7 @@ from src.database.session import async_session
 from src.repositories.base.abstract import AbstractRepository
 
 
-class SQLAlchemyRepository(AbstractRepository):
+class PostgresRepository(AbstractRepository):
     model = type[Base]
 
     async def add_one(self, data: dict):
