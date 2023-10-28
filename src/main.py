@@ -6,7 +6,7 @@ from src.api.include_routers import all_routers
 from src.config import logger
 
 
-app = FastAPI(title="AuthenticationSync API", version="1.0.0")
+app = FastAPI(title="AuthenticationSync API", version="1.0.0", docs_url="/api/docs/")
 
 
 async def include_routers(routers: tuple) -> None:

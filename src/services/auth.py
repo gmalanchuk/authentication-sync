@@ -1,4 +1,5 @@
 from src.api.schemas.auth import UserRegistrationRequestSchema, UserRegistrationResponseSchema
+from src.config import logger
 from src.repositories.auth import AuthRepository
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
@@ -20,5 +21,7 @@ class AuthService:
         user_dict["hashed_password"] = self.hash_password.create_hash(user_dict.pop("password"))
 
         res = await self.auth_repository.add_one(user_dict)
+
+        logger.info(f"User registered: {user_dict['username']}")
 
         return UserRegistrationResponseSchema(**res)
