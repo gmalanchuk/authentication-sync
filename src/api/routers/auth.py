@@ -19,7 +19,7 @@ async def registration(
     return await auth_service.registration(request_user)
 
 
-@auth_router.post(path="/login/")
+@auth_router.post(path="/login/", response_model=None)
 async def login(
     request_user: UserLoginRequestSchema, auth_service: AuthService = Depends(get_auth_service)
 ) -> JSONResponse | NoReturn:
