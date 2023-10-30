@@ -1,5 +1,3 @@
-import base64
-import hashlib
 from typing import NoReturn
 
 from starlette import status
@@ -7,11 +5,12 @@ from starlette.responses import JSONResponse
 
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
-from src.config import logger, settings
+from src.config import logger
 from src.repositories.auth import AuthRepository
 from src.services.exceptions.base import BaseHTTPException
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
+from src.utils.jwt_token import JWTToken
 
 
 class AuthService:
@@ -19,6 +18,7 @@ class AuthService:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
+        self.jwt_token = JWTToken()
         self.exception = BaseHTTPException()
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:
@@ -30,22 +30,13 @@ class AuthService:
 
         user_dict["hashed_password"] = self.hash_password.create_hash(user_dict.pop("password"))
 
-        res = (UserRegistrationResponseSchema(**await self.auth_repository.add_one(user_dict))).model_dump()
+        user_obj = (UserRegistrationResponseSchema(**await self.auth_repository.add_one(user_dict))).model_dump()
 
-        logger.info(f"User registered: {res['username']}")
+        logger.info(f"User registered: {user_obj['username']}")
 
-        response = JSONResponse(content=res, status_code=status.HTTP_201_CREATED)
+        response = JSONResponse(content=user_obj, status_code=status.HTTP_201_CREATED)
 
-        # -------------------------------------------------
-        # base64.b64decode(payload).decode()
-
-        header = base64.b64encode(str({"alg": "HS256", "typ": "JWT"}).encode()).decode()
-        payload = base64.b64encode(str({"user_id": res["id"]}).encode()).decode()
-        signature = hashlib.sha256((header + payload + settings.JWT_SECRET_KEY).encode()).hexdigest()
-
-        jwt_token = f"{header}.{payload}.{signature}"
-
-        response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
+        await self.jwt_token.create_token(user_obj=user_obj, response=response)
 
         return response
 
