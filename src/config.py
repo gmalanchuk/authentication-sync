@@ -7,6 +7,9 @@ class Settings(BaseSettings):
 
     LOGGING_LEVEL: str
 
+    JWT_SECRET_KEY: str
+    JWT_TOKEN_EXPIRES: int
+
     DB_NAME: str
     DB_USER: str
     DB_PASS: str
