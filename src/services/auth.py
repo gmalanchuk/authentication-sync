@@ -5,7 +5,7 @@ from starlette.responses import JSONResponse
 
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
-from src.config import logger
+from src.config import logger, settings
 from src.repositories.auth import AuthRepository
 from src.services.exceptions.base import BaseHTTPException
 from src.services.validators.auth import AuthValidator
@@ -34,10 +34,10 @@ class AuthService:
 
         logger.info(f"User registered: {user_obj['username']}")
 
+        jwt_token = await self.jwt_token.create_token(user_id=user_obj["id"])
+
         response = JSONResponse(content=user_obj, status_code=status.HTTP_201_CREATED)
-
-        await self.jwt_token.create_token(user_obj=user_obj, response=response)
-
+        response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
         return response
 
     async def login(self, user: UserLoginRequestSchema) -> JSONResponse | NoReturn:
@@ -46,9 +46,10 @@ class AuthService:
         user_exist = await self.auth_repository.get_one(model_field="email", value=user_dict["email"])
         if user_exist:
             if self.hash_password.verify_hash(user_dict["password"], user_exist.hashed_password):
-                # TODO set to cookie access/refresh tokens (не уверен в том, что нужно устанавливать два токена в куки)
-                return JSONResponse(
-                    content="SUCCESS!! jwt(access/refresh tokens)", status_code=200
-                )  # todo возвращать jwt(access/refresh токены)
+                jwt_token = await self.jwt_token.create_token(user_id=user_exist.id)
+
+                response = JSONResponse(content={"access_token": jwt_token}, status_code=status.HTTP_200_OK)
+                response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
+                return response
 
         return await self.exception.is_invalid(column_name1="email", column_name2="password")
