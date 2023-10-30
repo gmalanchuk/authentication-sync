@@ -2,9 +2,10 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.models.base import Base
+from src.database.models.mixin import TimeStampMixin
 
 
-class User(Base):
+class User(Base, TimeStampMixin):
     __tablename__ = "users"
 
     username: Mapped[str] = mapped_column(type_=String(16), nullable=False, unique=True)

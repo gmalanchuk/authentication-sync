@@ -1,4 +1,7 @@
+from typing import NoReturn
+
 from fastapi import APIRouter, Depends
+from starlette.responses import JSONResponse
 
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
@@ -16,8 +19,8 @@ async def registration(
     return await auth_service.registration(request_user)
 
 
-@auth_router.post(path="/login/")
+@auth_router.post(path="/login/", response_model=None)
 async def login(
     request_user: UserLoginRequestSchema, auth_service: AuthService = Depends(get_auth_service)
-) -> bool | None:
+) -> JSONResponse | NoReturn:
     return await auth_service.login(request_user)
