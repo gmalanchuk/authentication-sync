@@ -16,6 +16,12 @@ class UserRegistrationRequestSchema(BaseModel):
             raise HTTPException(detail="Username must be less than 16 characters", status_code=422)
         return username
 
+    @field_validator("name")
+    def validate_name(cls, name: str) -> str | NoReturn:
+        if len(name) > 16:
+            raise HTTPException(detail="Name must be less than 32 characters", status_code=422)
+        return name
+
 
 class UserRegistrationResponseSchema(BaseModel):
     id: int
