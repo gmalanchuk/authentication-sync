@@ -1,3 +1,4 @@
+import redis
 from loguru import logger
 from pydantic_settings import BaseSettings
 
@@ -9,6 +10,8 @@ class Settings(BaseSettings):
 
     JWT_SECRET_KEY: str
     JWT_TOKEN_EXPIRES: int
+
+    REDIS_PORT: int
 
     DB_NAME: str
     DB_USER: str
@@ -30,3 +33,7 @@ settings = Settings()
 
 # LOGGER
 logger.add("authentication.log", rotation="1 week", format="{level} | {time} | {message}", level=settings.LOGGING_LEVEL)
+
+
+# REDIS
+redis_client = redis.Redis(host="redis", port=settings.REDIS_PORT, db=0)
