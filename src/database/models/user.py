@@ -1,7 +1,15 @@
+from enum import Enum
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.models.base import Base, str16, str32, str64
 from src.database.models.mixin import TimeStampMixin
+
+
+class Role(Enum):
+    user = "user"
+    staff = "staff"
+    admin = "admin"
 
 
 class User(Base, TimeStampMixin):
@@ -12,3 +20,4 @@ class User(Base, TimeStampMixin):
     name: Mapped[str32]
     hashed_password: Mapped[str64] = mapped_column(nullable=False)
     is_verified: Mapped[bool] = mapped_column(nullable=False, default=False)
+    role: Mapped[Role] = mapped_column(nullable=False, default=Role.user)

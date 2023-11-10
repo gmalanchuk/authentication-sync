@@ -1,3 +1,5 @@
+import datetime
+import json
 from typing import NoReturn
 
 from starlette import status
@@ -5,7 +7,7 @@ from starlette.responses import JSONResponse
 
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
-from src.config import logger, settings
+from src.config import logger, redis_client, settings
 from src.repositories.auth import AuthRepository
 from src.services.exceptions.base import BaseHTTPException
 from src.services.validators.auth import AuthValidator
@@ -35,6 +37,17 @@ class AuthService:
         logger.info(f"User registered: {user_obj['username']}")
 
         jwt_token = await self.jwt_token.create_token(user_id=user_obj["id"])
+
+        data = json.dumps(
+            {
+                "token": jwt_token,
+                "expiration_time": (
+                    datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.JWT_TOKEN_EXPIRES)
+                ).strftime("%Y-%m-%d %H:%M:%S"),
+                "disabled": False,
+            }
+        )
+        redis_client.setex(name=str(user_obj["id"]), time=settings.JWT_TOKEN_EXPIRES, value=data)
 
         response = JSONResponse(content=user_obj, status_code=status.HTTP_201_CREATED)
         response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)

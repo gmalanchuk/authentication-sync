@@ -1,42 +1,27 @@
 import base64
 import datetime
 import hashlib
-import json
 
-from src.config import redis_client, settings
+from src.config import settings
 
 
 class JWTToken:
     @staticmethod
     async def create_token(user_id: dict) -> str:
         header = base64.b64encode(str({"alg": "HS256", "typ": "JWT"}).encode()).decode()
-
-        expiration_time = (
-            datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.JWT_TOKEN_EXPIRES)
-        ).strftime("%Y-%m-%d %H:%M:%S")
         payload = base64.b64encode(
             str(
                 {
                     "user_id": user_id,
-                    "expiration_time": expiration_time,
+                    "expiration_time": (
+                        datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.JWT_TOKEN_EXPIRES)
+                    ).strftime("%Y-%m-%d %H:%M:%S"),
                 }
             ).encode()
         ).decode()
-
         signature = hashlib.sha256((header + payload + settings.JWT_SECRET_KEY).encode()).hexdigest()
 
         jwt_token = f"{header}.{payload}.{signature}"
-
-        data = json.dumps(
-            {
-                "token": jwt_token,
-                "expiration_time": expiration_time,
-                "disabled": False,
-            }
-        )
-
-        redis_client.setex(name=str(user_id), time=settings.JWT_TOKEN_EXPIRES, value=data)
-
         return jwt_token
 
     @staticmethod

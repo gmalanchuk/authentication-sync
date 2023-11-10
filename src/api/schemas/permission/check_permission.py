@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class JWTTokenSchema(BaseModel):
+class TokenSchema(BaseModel):
     token: str
