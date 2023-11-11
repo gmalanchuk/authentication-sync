@@ -25,3 +25,10 @@ class BaseHTTPException:
     async def has_expired(value: str) -> NoReturn:
         logger.info(f"{value} has expired")
         raise HTTPException(detail=f"{value} has expired", status_code=status.HTTP_401_UNAUTHORIZED)
+
+    @staticmethod
+    async def must_be_confirmed(value: str) -> NoReturn:
+        logger.info(f"To perform this action, your {value} must be confirmed")
+        raise HTTPException(
+            detail=f"To perform this action, your {value} must be confirmed", status_code=status.HTTP_401_UNAUTHORIZED
+        )
