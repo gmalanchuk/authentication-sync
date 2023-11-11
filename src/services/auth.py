@@ -52,4 +52,4 @@ class AuthService:
                 response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
                 return response
 
-        return await self.exception.is_invalid(column_name1="email", column_name2="password")
+        return await self.exception.is_invalid(value1="email", value2="password")

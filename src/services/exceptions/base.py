@@ -16,9 +16,12 @@ class BaseHTTPException:
         )
 
     @staticmethod
-    async def is_invalid(column_name1: str, column_name2: str | None = None) -> NoReturn:
-        column_name2 = f"or {column_name2} " if column_name2 else ""
-        logger.info(f"{column_name1.title()} {column_name2}is invalid")
-        raise HTTPException(
-            detail=f"{column_name1.title()} {column_name2}is invalid", status_code=status.HTTP_401_UNAUTHORIZED
-        )
+    async def is_invalid(value1: str, value2: str | None = None) -> NoReturn:
+        value2 = f"or {value2} " if value2 else ""
+        logger.info(f"{value1} {value2}is invalid")
+        raise HTTPException(detail=f"{value1} {value2}is invalid", status_code=status.HTTP_401_UNAUTHORIZED)
+
+    @staticmethod
+    async def has_expired(value: str) -> NoReturn:
+        logger.info(f"{value} has expired")
+        raise HTTPException(detail=f"{value} has expired", status_code=status.HTTP_401_UNAUTHORIZED)

@@ -9,5 +9,5 @@ class RedisRepository(AbstractRepository):
         else:
             redis_client.setex(name=str(name), value=value, time=time)
 
-    async def get_one(self):
-        pass
+    async def get_one(self, name: str | int):
+        return redis_client.get(name=str(name))

@@ -10,14 +10,6 @@ permission_router = APIRouter(prefix="/v1/permission", tags=["Permissions"])
 
 @permission_router.post(path="/check/")
 async def check_permission(
-    token: TokenSchema, permission_service: PermissionService = Depends(get_permission_service)
+    request_token: TokenSchema, permission_service: PermissionService = Depends(get_permission_service)
 ) -> None:
-    # сюда поступает жвт токен
-    # проверить, существует ли этот токен в редисе
-    # этот токен декодируется и достаётся из него айдишник пользователя
-    # берём пользователя по этому айдишнику
-    # проверяем, потвердил ли он почту (is_verified должно быть True)
-    # если is_verified=False, то рейзить ошибку о том, что нужно подтвердить почту
-    # иначе
-    # возвращаем роль пользователя(права)
-    return await permission_service.check(token.model_dump())
+    return await permission_service.check(request_token)
