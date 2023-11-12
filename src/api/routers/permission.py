@@ -1,5 +1,3 @@
-from typing import NoReturn
-
 from fastapi import APIRouter, Depends
 from starlette.responses import JSONResponse
 
@@ -14,5 +12,5 @@ permission_router = APIRouter(prefix="/v1/permission", tags=["Permissions"])
 @permission_router.post(path="/check/")
 async def check_permission(
     request_token: TokenSchema, permission_service: PermissionService = Depends(get_permission_service)
-) -> JSONResponse | NoReturn:
+) -> JSONResponse:
     return await permission_service.check(request_token)

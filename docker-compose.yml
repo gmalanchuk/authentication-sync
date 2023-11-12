@@ -28,6 +28,7 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
+      - PGPORT=${DB_PORT}
 
   redis:
     image: redis
