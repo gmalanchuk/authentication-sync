@@ -1,9 +1,11 @@
+import asyncio
 from datetime import datetime
 
 from fastapi import APIRouter, FastAPI
 
 from src.api.include_routers import all_routers
 from src.config import logger
+from src.grpc_server import serve
 
 
 app = FastAPI(title="AuthenticationSync API", version="1.0.0", docs_url="/api/docs/")
@@ -27,6 +29,7 @@ async def startup() -> None:
     start_time = datetime.now()
 
     await include_routers(all_routers)
+    asyncio.create_task(serve())
 
     end_time = datetime.now()
 
