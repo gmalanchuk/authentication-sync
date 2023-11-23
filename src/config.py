@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     JWT_TOKEN_EXPIRES: int
 
+    REDIS_HOST: str
     REDIS_PORT: int
 
     DB_NAME: str
@@ -36,4 +37,4 @@ logger.add("authentication.log", rotation="1 week", format="{level} | {time} | {
 
 
 # REDIS
-redis_client = redis.Redis(host="redis", port=settings.REDIS_PORT, db=0)
+redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0)

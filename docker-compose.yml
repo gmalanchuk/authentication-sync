@@ -14,9 +14,11 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      - postgres
+      - redis
 
-  db:
+  postgres:
+    hostname: ${POSTGRES_HOST}
     image: postgres:alpine
     restart: always
     volumes:
@@ -26,12 +28,13 @@ services:
     ports:
       - '${DB_PORT}:5432'
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-      - PGPORT=${DB_PORT}
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - PGPORT=${POSTGRES_PORT}
 
   redis:
+    hostname: ${REDIS_HOST}
     image: redis
     ports:
       - "${REDIS_PORT}:6379"
@@ -42,7 +45,7 @@ services:
     ports:
       - '8080:8080'
     depends_on:
-      - db
+      - postgres
 
 
 volumes:
