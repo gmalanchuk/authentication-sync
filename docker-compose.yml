@@ -2,6 +2,7 @@ version: '3'
 
 services:
   authentication:
+    container_name: authentication
     build: .
     restart: always
     volumes:
@@ -20,6 +21,7 @@ services:
       - network
 
   postgres:
+    container_name: authentication-postgres
     hostname: ${POSTGRES_HOST}
     image: postgres:alpine
     restart: always
@@ -38,6 +40,7 @@ services:
       - network
 
   redis:
+    container_name: authentication-redis
     hostname: ${REDIS_HOST}
     image: redis
     ports:
@@ -46,6 +49,7 @@ services:
       - network
 
   adminer:
+    container_name: authentication-adminer
     image: adminer
     restart: always
     ports:
