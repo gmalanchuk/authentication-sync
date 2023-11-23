@@ -16,6 +16,8 @@ services:
     depends_on:
       - postgres
       - redis
+    networks:
+      - network
 
   postgres:
     hostname: ${POSTGRES_HOST}
@@ -26,18 +28,22 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - '${DB_PORT}:5432'
+      - '${POSTGRES_PORT}:5432'
     environment:
       - POSTGRES_DB=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
-      - PGPORT=${POSTGRES_PORT}
+      - PGPORT=5432
+    networks:
+      - network
 
   redis:
     hostname: ${REDIS_HOST}
     image: redis
     ports:
       - "${REDIS_PORT}:6379"
+    networks:
+      - network
 
   adminer:
     image: adminer
@@ -46,7 +52,15 @@ services:
       - '8080:8080'
     depends_on:
       - postgres
+    networks:
+      - network
 
 
 volumes:
   postgres_data:
+
+
+networks:
+  network:
+    driver: bridge
+    name: authentication_network

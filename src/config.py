@@ -14,15 +14,18 @@ class Settings(BaseSettings):
     REDIS_HOST: str
     REDIS_PORT: int
 
-    DB_NAME: str
-    DB_USER: str
-    DB_PASS: str
-    DB_PORT: int
-    DB_HOST: str
+    POSTGRES_NAME: str
+    POSTGRES_USER: str
+    POSTGRES_PASS: str
+    POSTGRES_PORT: int
+    POSTGRES_HOST: str
 
     @property
     def SQLALCHEMY_URL(self) -> str:
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return (
+            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASS}@{self.POSTGRES_HOST}:"
+            f"{self.POSTGRES_PORT}/{self.POSTGRES_NAME}"
+        )
 
     class Config:
         env_file = ".env"
@@ -31,10 +34,8 @@ class Settings(BaseSettings):
 # ENVIRONMENT VARIABLES
 settings = Settings()
 
-
 # LOGGER
 logger.add("authentication.log", rotation="1 week", format="{level} | {time} | {message}", level=settings.LOGGING_LEVEL)
-
 
 # REDIS
 redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0)
