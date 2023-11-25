@@ -37,7 +37,9 @@ class AuthService:
         jwt_token = await self.jwt_token.create_token(user_id=user_obj["id"])
 
         response = JSONResponse(content=user_obj, status_code=status.HTTP_201_CREATED)
-        response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
+        response.set_cookie(
+            key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES, domain=settings.FRONTEND_DOMAIN
+        )
         return response
 
     async def login(self, user: UserLoginRequestSchema) -> JSONResponse | NoReturn:

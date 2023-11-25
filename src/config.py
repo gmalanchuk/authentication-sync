@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int
     POSTGRES_HOST: str
 
+    FRONTEND_DOMAIN: str
+
     @property
     def SQLALCHEMY_URL(self) -> str:
         return (
