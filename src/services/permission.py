@@ -8,12 +8,13 @@ from src.utils.jwt_token import JWTToken
 
 
 class PermissionService:
-    def __init__(self) -> None:
+    def __init__(self, tag: TagEnum) -> None:
         self.permission_repository = PermissionRepository()
         self.exception = BaseHTTPException()
         self.jwt_token = JWTToken()
+        self.tag = tag
 
-    async def check(self, token_dict: dict, tag: TagEnum) -> str | None:
+    async def check(self, token_dict: dict) -> str | None:
         payload = await self.jwt_token.decode_token(token_dict["token"])
 
         user = await self.permission_repository.get_one(model_field="id", value=payload["user_id"])
@@ -21,9 +22,9 @@ class PermissionService:
         if not user.is_verified:
             return await self.exception.must_be_confirmed("email")
 
-        if tag == tag.HTTP:
+        if self.tag == self.tag.HTTP:
             return JSONResponse(content={"role": user.role.value}, status_code=status.HTTP_200_OK)
-        elif tag == tag.GRPC:
+        elif self.tag == self.tag.GRPC:
             return user.role.value
 
         return None

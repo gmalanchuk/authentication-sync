@@ -8,10 +8,10 @@ from src.services.permission import PermissionService
 
 class CheckPermission(PermissionServicer):
     def __init__(self) -> None:
-        self.permission_service = PermissionService()
+        self.permission_service = PermissionService(tag=TagEnum.GRPC)
 
     async def CheckPermission(
         self, request: PermissionRequest, context: grpc.aio.ServicerContext
     ) -> PermissionResponse:
-        role = await self.permission_service.check(token_dict={"token": request.token}, tag=TagEnum.GRPC)
+        role = await self.permission_service.check(token_dict={"token": request.token})
         return PermissionResponse(role=role)
