@@ -7,8 +7,7 @@ import json
 from src.config import settings
 from src.repositories.base.redis import RedisRepository
 from src.services.enums.tag import TagEnum
-from src.services.exceptions.grpc_exceptions import GRPCExceptions
-from src.services.exceptions.http_exceptions import HTTPExceptions
+from src.services.exceptions.base_exceptions import BaseExceptions
 
 
 class JWTTokenSaveToRedis:
@@ -31,9 +30,7 @@ class JWTTokenSaveToRedis:
 class JWTToken(JWTTokenSaveToRedis):
     def __init__(self, tag: TagEnum) -> None:
         super().__init__()
-        self.http_exception = HTTPExceptions()
-        self.grpc_exception = GRPCExceptions()
-        self.tag = tag
+        self.exception = BaseExceptions(tag)
 
     async def create_token(self, user_id: int) -> str:
         header = base64.b64encode(str({"alg": "HS256", "typ": "JWT"}).encode()).decode()
@@ -65,19 +62,15 @@ class JWTToken(JWTTokenSaveToRedis):
 
     async def decode_token(self, token: str) -> dict:
         header, payload, signature = token.split(".")
+
         if not await self.verify_token(header, payload, signature):
-            if self.tag == TagEnum.HTTP:
-                return await self.http_exception.is_invalid(value1="JWT token")
-            elif self.tag == TagEnum.GRPC:
-                return await self.grpc_exception.is_invalid(value1="JWT token")
+            return await self.exception.is_invalid(value1="JWT token")
+
         decoded_payload = ast.literal_eval(base64.b64decode(payload).decode())
 
         value = await self.redis.get_one(name=decoded_payload["user_id"])
 
         if not value:
-            if self.tag == TagEnum.HTTP:
-                return await self.http_exception.has_expired(value="JWT token")
-            elif self.tag == TagEnum.GRPC:
-                return await self.grpc_exception.has_expired(value="JWT token")
+            return await self.exception.has_expired(value="JWT token")
 
         return decoded_payload

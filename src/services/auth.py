@@ -43,7 +43,7 @@ class AuthService:
         )
         return response
 
-    async def login(self, user: UserLoginRequestSchema) -> JSONResponse | NoReturn:
+    async def login(self, user: UserLoginRequestSchema) -> JSONResponse | NoReturn | None:
         user_dict = user.model_dump()
 
         user_exist = await self.auth_repository.get_one(model_field="email", value=user_dict["email"])
@@ -55,4 +55,5 @@ class AuthService:
                 response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
                 return response
 
-        return await self.exception.is_invalid(value1="email", value2="password")
+        # return await self.exception.is_invalid(value1="email", value2="password")
+        return None

@@ -20,5 +20,5 @@ async def registration(
 @auth_router.post(path="/login/", response_model=None)
 async def login(
     request_user: UserLoginRequestSchema, auth_service: AuthService = Depends(get_auth_service)
-) -> JSONResponse:
+) -> JSONResponse | None:
     return await auth_service.login(request_user)
