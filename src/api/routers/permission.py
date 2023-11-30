@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from src.api.schemas.permission.check_permission import TokenSchema
-from src.services.enums.tag import TagEnum
+from src.enums.tag import TagEnum
 from src.services.permission import PermissionService
 
 

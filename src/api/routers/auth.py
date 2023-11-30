@@ -3,8 +3,8 @@ from starlette.responses import JSONResponse
 
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
+from src.enums.tag import TagEnum
 from src.services.auth import AuthService
-from src.services.enums.tag import TagEnum
 
 
 auth_router = APIRouter(prefix="/v1/auth", tags=["Auth"])

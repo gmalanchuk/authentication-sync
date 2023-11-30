@@ -2,7 +2,7 @@ import grpc
 
 from protos.permission_pb2 import PermissionRequest, PermissionResponse
 from protos.permission_pb2_grpc import PermissionServicer
-from src.services.enums.tag import TagEnum
+from src.enums.tag import TagEnum
 from src.services.permission import PermissionService
 
 

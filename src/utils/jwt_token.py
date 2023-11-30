@@ -5,8 +5,8 @@ import hashlib
 import json
 
 from src.config import settings
+from src.enums.tag import TagEnum
 from src.repositories.base.redis import RedisRepository
-from src.services.enums.tag import TagEnum
 from src.services.exceptions.base_exceptions import BaseExceptions
 
 

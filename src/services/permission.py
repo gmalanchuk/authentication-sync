@@ -1,8 +1,8 @@
 from starlette import status
 from starlette.responses import JSONResponse
 
+from src.enums.tag import TagEnum
 from src.repositories.permission import PermissionRepository
-from src.services.enums.tag import TagEnum
 from src.services.exceptions.base_exceptions import BaseExceptions
 from src.utils.jwt_token import JWTToken
 
