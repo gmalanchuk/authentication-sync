@@ -7,20 +7,19 @@ from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
 from src.config import logger, settings
 from src.repositories.auth import AuthRepository
-from src.services.enums.tag import TagEnum
-from src.services.exceptions.http_exceptions import HTTPExceptions
+from src.services.exceptions.base_exceptions import BaseExceptions
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
 from src.utils.jwt_token import JWTToken
 
 
 class AuthService:
-    def __init__(self) -> None:
+    def __init__(self, tag) -> None:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
-        self.jwt_token = JWTToken(TagEnum.HTTP)
-        self.exception = HTTPExceptions()
+        self.jwt_token = JWTToken(tag)
+        self.exception = BaseExceptions(tag)
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:
         user_dict = user.model_dump()
@@ -55,5 +54,4 @@ class AuthService:
                 response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
                 return response
 
-        # return await self.exception.is_invalid(value1="email", value2="password")
-        return None
+        return await self.exception.is_invalid(value1="email", value2="password")
