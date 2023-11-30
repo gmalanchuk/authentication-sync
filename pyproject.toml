@@ -20,6 +20,7 @@ asyncpg = "^0.28.0"
 sqlalchemy = "^2.0.22"
 passlib = "^1.7.4"
 redis = "^5.0.1"
+grpcio-tools = "^1.59.3"
 
 
 [build-system]
@@ -33,3 +34,4 @@ lines_after_imports = 2
 
 [tool.black]
 line-length = 120
+exclude = '/protos/'

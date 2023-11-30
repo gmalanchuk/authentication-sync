@@ -6,20 +6,21 @@ from starlette.responses import JSONResponse
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
 from src.config import logger, settings
+from src.enums.tag import TagEnum
 from src.repositories.auth import AuthRepository
-from src.services.exceptions.base import BaseHTTPException
+from src.services.exceptions.base_exceptions import BaseExceptions
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
 from src.utils.jwt_token import JWTToken
 
 
 class AuthService:
-    def __init__(self) -> None:
+    def __init__(self, tag: TagEnum) -> None:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
-        self.jwt_token = JWTToken()
-        self.exception = BaseHTTPException()
+        self.jwt_token = JWTToken(tag)
+        self.exception = BaseExceptions(tag)
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:
         user_dict = user.model_dump()
@@ -37,7 +38,9 @@ class AuthService:
         jwt_token = await self.jwt_token.create_token(user_id=user_obj["id"])
 
         response = JSONResponse(content=user_obj, status_code=status.HTTP_201_CREATED)
-        response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
+        response.set_cookie(
+            key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES, domain=settings.FRONTEND_DOMAIN
+        )
         return response
 
     async def login(self, user: UserLoginRequestSchema) -> JSONResponse | NoReturn:

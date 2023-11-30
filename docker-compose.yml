@@ -2,6 +2,7 @@ version: '3'
 
 services:
   authentication:
+    container_name: authentication
     build: .
     restart: always
     volumes:
@@ -10,12 +11,18 @@ services:
       sh -c "alembic upgrade head && uvicorn src.main:app --reload --host 0.0.0.0 --port 8001"
     ports:
       - '8001:8001'
+      - '50051:50051'
     env_file:
       - .env
     depends_on:
-      - db
+      - postgres
+      - redis
+    networks:
+      - network
 
-  db:
+  postgres:
+    container_name: authentication-postgres
+    hostname: ${POSTGRES_HOST}
     image: postgres:alpine
     restart: always
     volumes:
@@ -23,26 +30,41 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - postgres_data:/var/lib/postgresql/data/
     ports:
-      - '${DB_PORT}:5432'
+      - '${POSTGRES_PORT}:5432'
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-      - PGPORT=${DB_PORT}
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - PGPORT=5432
+    networks:
+      - network
 
   redis:
+    container_name: authentication-redis
+    hostname: ${REDIS_HOST}
     image: redis
     ports:
       - "${REDIS_PORT}:6379"
+    networks:
+      - network
 
   adminer:
+    container_name: authentication-adminer
     image: adminer
     restart: always
     ports:
       - '8080:8080'
     depends_on:
-      - db
+      - postgres
+    networks:
+      - network
 
 
 volumes:
   postgres_data:
+
+
+networks:
+  network:
+    driver: bridge
+    name: authentication_network
