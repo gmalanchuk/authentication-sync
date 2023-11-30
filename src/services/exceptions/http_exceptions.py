@@ -6,15 +6,7 @@ from starlette import status
 from src.config import logger
 
 
-class BaseHTTPException:
-    @staticmethod
-    async def _already_exists_exception(model_name: str, model_field: str) -> NoReturn:
-        logger.info(f"{model_name.title()} with this {model_field.lower()} already exists")
-        raise HTTPException(
-            detail=f"{model_name.title()} with this {model_field.lower()} already exists",
-            status_code=status.HTTP_409_CONFLICT,
-        )
-
+class HTTPExceptions:
     @staticmethod
     async def is_invalid(value1: str, value2: str | None = None) -> NoReturn:
         value2 = f"or {value2} " if value2 else ""
