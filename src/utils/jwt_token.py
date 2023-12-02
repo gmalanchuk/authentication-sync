@@ -61,6 +61,9 @@ class JWTToken(JWTTokenSaveToRedis):
         return False
 
     async def decode_token(self, token: str) -> dict:
+        if not token:
+            return await self.exception.login_required()
+
         header, payload, signature = token.split(".")
 
         if not await self.verify_token(header, payload, signature):
