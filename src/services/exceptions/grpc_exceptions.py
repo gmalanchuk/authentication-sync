@@ -21,3 +21,8 @@ class GRPCExceptions(PermissionServicer):
     async def must_be_confirmed(detail: str, status_code: int) -> NoReturn:
         logger.info(detail)
         raise grpc.RpcError(grpc.StatusCode.UNAUTHENTICATED, detail)
+
+    @staticmethod
+    async def login_required(detail: str, status_code: int) -> NoReturn:
+        logger.info(detail)
+        raise grpc.RpcError(grpc.StatusCode.UNAUTHENTICATED, detail)

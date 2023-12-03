@@ -32,3 +32,9 @@ class BaseExceptions:
         detail = f"To perform this action, your {value} must be confirmed"
         status_code = status.HTTP_401_UNAUTHORIZED
         return await tag_exception.must_be_confirmed(detail, status_code)
+
+    async def login_required(self):
+        tag_exception = await self.get_exception_tag(self.tag)
+        detail = "Login required"
+        status_code = status.HTTP_401_UNAUTHORIZED
+        return await tag_exception.login_required(detail, status_code)
