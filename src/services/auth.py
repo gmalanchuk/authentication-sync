@@ -52,7 +52,10 @@ class AuthService:
                 jwt_token = await self.jwt_token.create_token(user_id=user_exist.id)
 
                 response = JSONResponse(content={"access_token": jwt_token}, status_code=status.HTTP_200_OK)
-                response.set_cookie(key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES)
+                response.set_cookie(
+                    key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES,
+                    domain=settings.FRONTEND_DOMAIN
+                )
                 return response
 
         return await self.exception.is_invalid(value1="email", value2="password")
