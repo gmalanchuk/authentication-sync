@@ -4,3 +4,8 @@ Then run the command:
 ```sh
 docker-compose up --build
 ```
+
+If you want to use the pre-commit:
+```sh
+pre-commit install
+```
