@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
 
     FRONTEND_DOMAIN: str
+    GRPC_PORT: int
 
     @property
     def SQLALCHEMY_URL(self) -> str:
