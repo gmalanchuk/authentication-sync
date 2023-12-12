@@ -14,17 +14,28 @@ class PermissionStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CheckPermission = channel.unary_unary(
-                '/permission.Permission/CheckPermission',
-                request_serializer=protos_dot_permission__pb2.PermissionRequest.SerializeToString,
-                response_deserializer=protos_dot_permission__pb2.PermissionResponse.FromString,
+        self.CheckRole = channel.unary_unary(
+                '/permission.Permission/CheckRole',
+                request_serializer=protos_dot_permission__pb2.CheckRoleRequest.SerializeToString,
+                response_deserializer=protos_dot_permission__pb2.CheckRoleResponse.FromString,
+                )
+        self.CheckUserID = channel.unary_unary(
+                '/permission.Permission/CheckUserID',
+                request_serializer=protos_dot_permission__pb2.CheckUserIDRequest.SerializeToString,
+                response_deserializer=protos_dot_permission__pb2.CheckUserIDResponse.FromString,
                 )
 
 
 class PermissionServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CheckPermission(self, request, context):
+    def CheckRole(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CheckUserID(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,10 +44,15 @@ class PermissionServicer(object):
 
 def add_PermissionServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckPermission': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckPermission,
-                    request_deserializer=protos_dot_permission__pb2.PermissionRequest.FromString,
-                    response_serializer=protos_dot_permission__pb2.PermissionResponse.SerializeToString,
+            'CheckRole': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckRole,
+                    request_deserializer=protos_dot_permission__pb2.CheckRoleRequest.FromString,
+                    response_serializer=protos_dot_permission__pb2.CheckRoleResponse.SerializeToString,
+            ),
+            'CheckUserID': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckUserID,
+                    request_deserializer=protos_dot_permission__pb2.CheckUserIDRequest.FromString,
+                    response_serializer=protos_dot_permission__pb2.CheckUserIDResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -49,7 +65,7 @@ class Permission(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CheckPermission(request,
+    def CheckRole(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +75,25 @@ class Permission(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/permission.Permission/CheckPermission',
-            protos_dot_permission__pb2.PermissionRequest.SerializeToString,
-            protos_dot_permission__pb2.PermissionResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/permission.Permission/CheckRole',
+            protos_dot_permission__pb2.CheckRoleRequest.SerializeToString,
+            protos_dot_permission__pb2.CheckRoleResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CheckUserID(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/permission.Permission/CheckUserID',
+            protos_dot_permission__pb2.CheckUserIDRequest.SerializeToString,
+            protos_dot_permission__pb2.CheckUserIDResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
