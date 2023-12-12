@@ -13,5 +13,5 @@ class CheckPermission(PermissionServicer):
     async def CheckPermission(
         self, request: PermissionRequest, context: grpc.aio.ServicerContext
     ) -> PermissionResponse:
-        role = await self.permission_service.check(token_dict={"token": request.token})
+        role = await self.permission_service.check_role(token_dict={"token": request.token})
         return PermissionResponse(role=role)

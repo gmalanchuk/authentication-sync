@@ -64,7 +64,10 @@ class JWTToken(JWTTokenSaveToRedis):
         if not token:
             return await self.exception.login_required()
 
-        header, payload, signature = token.split(".")
+        try:
+            header, payload, signature = token.split(".")
+        except ValueError:
+            return await self.exception.is_invalid(value1="JWT token")
 
         if not await self.verify_token(header, payload, signature):
             return await self.exception.is_invalid(value1="JWT token")

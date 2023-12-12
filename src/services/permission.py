@@ -14,7 +14,7 @@ class PermissionService:
         self.jwt_token = JWTToken(tag)
         self.tag = tag
 
-    async def check(self, token_dict: dict) -> str | None:
+    async def check_role(self, token_dict: dict) -> str | None:
         payload = await self.jwt_token.decode_token(token_dict["token"])
 
         user = await self.permission_repository.get_one(model_field="id", value=payload["user_id"])

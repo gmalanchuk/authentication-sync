@@ -53,8 +53,10 @@ class AuthService:
 
                 response = JSONResponse(content={"access_token": jwt_token}, status_code=status.HTTP_200_OK)
                 response.set_cookie(
-                    key="access_token", value=jwt_token, expires=settings.JWT_TOKEN_EXPIRES,
-                    domain=settings.FRONTEND_DOMAIN
+                    key="access_token",
+                    value=jwt_token,
+                    expires=settings.JWT_TOKEN_EXPIRES,
+                    domain=settings.FRONTEND_DOMAIN,
                 )
                 return response
 
