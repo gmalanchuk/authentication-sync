@@ -7,26 +7,16 @@ from google.protobuf import message as _message
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class CheckRoleRequest(_message.Message):
+class RoleUserIDRequest(_message.Message):
     __slots__ = ["token"]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     token: str
     def __init__(self, token: _Optional[str] = ...) -> None: ...
 
-class CheckRoleResponse(_message.Message):
-    __slots__ = ["role"]
+class RoleUserIDResponse(_message.Message):
+    __slots__ = ["role", "user_id"]
     ROLE_FIELD_NUMBER: _ClassVar[int]
-    role: str
-    def __init__(self, role: _Optional[str] = ...) -> None: ...
-
-class CheckUserIDRequest(_message.Message):
-    __slots__ = ["token"]
-    TOKEN_FIELD_NUMBER: _ClassVar[int]
-    token: str
-    def __init__(self, token: _Optional[str] = ...) -> None: ...
-
-class CheckUserIDResponse(_message.Message):
-    __slots__ = ["user_id"]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
+    role: str
     user_id: int
-    def __init__(self, user_id: _Optional[int] = ...) -> None: ...
+    def __init__(self, role: _Optional[str] = ..., user_id: _Optional[int] = ...) -> None: ...

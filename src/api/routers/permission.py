@@ -8,6 +8,6 @@ from src.services.permission import PermissionService
 permission_router = APIRouter(prefix="/v1/permission", tags=["Permissions"])
 
 
-@permission_router.post(path="/check_role/")
-async def check_role(request_token: TokenSchema) -> str | None:
-    return await PermissionService(TagEnum.HTTP).check_role(token_dict=request_token.model_dump())
+@permission_router.post(path="/check_role_and_userid/")
+async def check_role_and_userid(request_token: TokenSchema) -> tuple[str, int]:
+    return await PermissionService(TagEnum.HTTP).check_role_and_userid(token_dict=request_token.model_dump())

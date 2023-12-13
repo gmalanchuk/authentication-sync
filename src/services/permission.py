@@ -14,7 +14,7 @@ class PermissionService:
         self.jwt_token = JWTToken(tag)
         self.tag = tag
 
-    async def check_role(self, token_dict: dict) -> str | None:
+    async def check_role_and_userid(self, token_dict: dict) -> tuple[str, int]:
         payload = await self.jwt_token.decode_token(token_dict["token"])
 
         user = await self.permission_repository.get_one(model_field="id", value=payload["user_id"])
@@ -23,8 +23,6 @@ class PermissionService:
             return await self.exception.must_be_confirmed("email")
 
         if self.tag == self.tag.HTTP:
-            return JSONResponse(content={"role": user.role.value}, status_code=status.HTTP_200_OK)
-        elif self.tag == self.tag.GRPC:
-            return user.role.value
-
-        return None
+            return JSONResponse(content={"role": user.role.value, "user_id": user.id}, status_code=status.HTTP_200_OK)
+        else:  # GRPC
+            return user.role.value, user.id
