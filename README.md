@@ -9,3 +9,5 @@ If you want to use the pre-commit:
 ```sh
 pre-commit install
 ```
+
+Documentation address: http://localhost:8001/api/docs/
