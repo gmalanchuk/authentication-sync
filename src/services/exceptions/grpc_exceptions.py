@@ -2,11 +2,10 @@ from typing import NoReturn
 
 import grpc
 
-from protos.permission_pb2_grpc import PermissionServicer
 from src.config import logger
 
 
-class GRPCExceptions(PermissionServicer):
+class GRPCExceptions:
     @staticmethod
     async def is_invalid(detail: str, status_code: int) -> NoReturn:
         logger.info(detail)

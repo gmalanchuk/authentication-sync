@@ -1,6 +1,3 @@
-from starlette import status
-from starlette.responses import JSONResponse
-
 from src.enums.tag import TagEnum
 from src.repositories.permission import PermissionRepository
 from src.services.exceptions.base_exceptions import BaseExceptions
@@ -12,9 +9,10 @@ class PermissionService:
         self.permission_repository = PermissionRepository()
         self.exception = BaseExceptions(tag)
         self.jwt_token = JWTToken(tag)
-        self.tag = tag
 
-    async def check_role_and_userid(self, token_dict: dict) -> tuple[str, int]:
+    async def get_user_info(
+        self, token_dict: dict
+    ) -> tuple[int, str, str, str, str,]:
         payload = await self.jwt_token.decode_token(token_dict["token"])
 
         user = await self.permission_repository.get_one(model_field="id", value=payload["user_id"])
@@ -22,7 +20,4 @@ class PermissionService:
         if not user.is_verified:
             return await self.exception.must_be_confirmed("email")
 
-        if self.tag == self.tag.HTTP:
-            return JSONResponse(content={"role": user.role.value, "user_id": user.id}, status_code=status.HTTP_200_OK)
-        else:  # GRPC
-            return user.role.value, user.id
+        return user.id, user.username, user.email, user.name, user.role.value

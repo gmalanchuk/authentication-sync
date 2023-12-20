@@ -2,10 +2,10 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from protos import permission_pb2 as protos_dot_permission__pb2
+from protos import user_pb2 as protos_dot_user__pb2
 
 
-class PermissionStub(object):
+class UserStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -14,42 +14,42 @@ class PermissionStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CheckRoleUserID = channel.unary_unary(
-                '/permission.Permission/CheckRoleUserID',
-                request_serializer=protos_dot_permission__pb2.RoleUserIDRequest.SerializeToString,
-                response_deserializer=protos_dot_permission__pb2.RoleUserIDResponse.FromString,
+        self.CheckUser = channel.unary_unary(
+                '/user.User/CheckUser',
+                request_serializer=protos_dot_user__pb2.UserRequest.SerializeToString,
+                response_deserializer=protos_dot_user__pb2.UserResponse.FromString,
                 )
 
 
-class PermissionServicer(object):
+class UserServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CheckRoleUserID(self, request, context):
+    def CheckUser(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_PermissionServicer_to_server(servicer, server):
+def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckRoleUserID': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckRoleUserID,
-                    request_deserializer=protos_dot_permission__pb2.RoleUserIDRequest.FromString,
-                    response_serializer=protos_dot_permission__pb2.RoleUserIDResponse.SerializeToString,
+            'CheckUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckUser,
+                    request_deserializer=protos_dot_user__pb2.UserRequest.FromString,
+                    response_serializer=protos_dot_user__pb2.UserResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'permission.Permission', rpc_method_handlers)
+            'user.User', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Permission(object):
+class User(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CheckRoleUserID(request,
+    def CheckUser(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +59,8 @@ class Permission(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/permission.Permission/CheckRoleUserID',
-            protos_dot_permission__pb2.RoleUserIDRequest.SerializeToString,
-            protos_dot_permission__pb2.RoleUserIDResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/user.User/CheckUser',
+            protos_dot_user__pb2.UserRequest.SerializeToString,
+            protos_dot_user__pb2.UserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
