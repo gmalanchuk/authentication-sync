@@ -14,10 +14,10 @@ class UserRequestToken(_message.Message):
     def __init__(self, token: _Optional[str] = ...) -> None: ...
 
 class UserRequestID(_message.Message):
-    __slots__ = ["id"]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
+    __slots__ = ["user_id"]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
+    user_id: int
+    def __init__(self, user_id: _Optional[int] = ...) -> None: ...
 
 class UserResponse(_message.Message):
     __slots__ = ["user_id", "username", "email", "name", "role"]

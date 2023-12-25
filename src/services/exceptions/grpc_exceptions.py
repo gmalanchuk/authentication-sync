@@ -25,3 +25,8 @@ class GRPCExceptions:
     async def login_required(detail: str, status_code: int) -> NoReturn:
         logger.info(detail)
         raise grpc.RpcError(grpc.StatusCode.UNAUTHENTICATED, detail)
+
+    @staticmethod
+    async def not_found(detail: str, status_code: int) -> NoReturn:
+        logger.info(detail)
+        raise grpc.RpcError(grpc.StatusCode.NOT_FOUND, detail)

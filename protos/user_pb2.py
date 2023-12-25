@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11protos/user.proto\x12\x04user\"!\n\x10UserRequestToken\x12\r\n\x05token\x18\x01 \x01(\t\"\x1b\n\rUserRequestID\x12\n\n\x02id\x18\x01 \x01(\t\"\\\n\x0cUserResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x04\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0c\n\x04role\x18\x05 \x01(\t2\x80\x01\n\x04User\x12>\n\x0e\x43heckUserToken\x12\x16.user.UserRequestToken\x1a\x12.user.UserResponse\"\x00\x12\x38\n\x0b\x43heckUserID\x12\x13.user.UserRequestID\x1a\x12.user.UserResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11protos/user.proto\x12\x04user\"!\n\x10UserRequestToken\x12\r\n\x05token\x18\x01 \x01(\t\" \n\rUserRequestID\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"\\\n\x0cUserResponse\x12\x0f\n\x07user_id\x18\x01 \x01(\x04\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0c\n\x04role\x18\x05 \x01(\t2\x80\x01\n\x04User\x12>\n\x0e\x43heckUserToken\x12\x16.user.UserRequestToken\x1a\x12.user.UserResponse\"\x00\x12\x38\n\x0b\x43heckUserID\x12\x13.user.UserRequestID\x1a\x12.user.UserResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,9 +25,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_USERREQUESTTOKEN']._serialized_start=27
   _globals['_USERREQUESTTOKEN']._serialized_end=60
   _globals['_USERREQUESTID']._serialized_start=62
-  _globals['_USERREQUESTID']._serialized_end=89
-  _globals['_USERRESPONSE']._serialized_start=91
-  _globals['_USERRESPONSE']._serialized_end=183
-  _globals['_USER']._serialized_start=186
-  _globals['_USER']._serialized_end=314
+  _globals['_USERREQUESTID']._serialized_end=94
+  _globals['_USERRESPONSE']._serialized_start=96
+  _globals['_USERRESPONSE']._serialized_end=188
+  _globals['_USER']._serialized_start=191
+  _globals['_USER']._serialized_end=319
 # @@protoc_insertion_point(module_scope)
