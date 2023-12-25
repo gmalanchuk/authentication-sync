@@ -14,9 +14,14 @@ class UserStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CheckUser = channel.unary_unary(
-                '/user.User/CheckUser',
-                request_serializer=protos_dot_user__pb2.UserRequest.SerializeToString,
+        self.CheckUserToken = channel.unary_unary(
+                '/user.User/CheckUserToken',
+                request_serializer=protos_dot_user__pb2.UserRequestToken.SerializeToString,
+                response_deserializer=protos_dot_user__pb2.UserResponse.FromString,
+                )
+        self.CheckUserID = channel.unary_unary(
+                '/user.User/CheckUserID',
+                request_serializer=protos_dot_user__pb2.UserRequestID.SerializeToString,
                 response_deserializer=protos_dot_user__pb2.UserResponse.FromString,
                 )
 
@@ -24,7 +29,13 @@ class UserStub(object):
 class UserServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CheckUser(self, request, context):
+    def CheckUserToken(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CheckUserID(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,9 +44,14 @@ class UserServicer(object):
 
 def add_UserServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckUser': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckUser,
-                    request_deserializer=protos_dot_user__pb2.UserRequest.FromString,
+            'CheckUserToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckUserToken,
+                    request_deserializer=protos_dot_user__pb2.UserRequestToken.FromString,
+                    response_serializer=protos_dot_user__pb2.UserResponse.SerializeToString,
+            ),
+            'CheckUserID': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckUserID,
+                    request_deserializer=protos_dot_user__pb2.UserRequestID.FromString,
                     response_serializer=protos_dot_user__pb2.UserResponse.SerializeToString,
             ),
     }
@@ -49,7 +65,7 @@ class User(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CheckUser(request,
+    def CheckUserToken(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +75,25 @@ class User(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/user.User/CheckUser',
-            protos_dot_user__pb2.UserRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/user.User/CheckUserToken',
+            protos_dot_user__pb2.UserRequestToken.SerializeToString,
+            protos_dot_user__pb2.UserResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CheckUserID(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/user.User/CheckUserID',
+            protos_dot_user__pb2.UserRequestID.SerializeToString,
             protos_dot_user__pb2.UserResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

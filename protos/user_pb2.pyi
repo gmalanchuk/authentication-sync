@@ -7,11 +7,17 @@ from google.protobuf import message as _message
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class UserRequest(_message.Message):
+class UserRequestToken(_message.Message):
     __slots__ = ["token"]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     token: str
     def __init__(self, token: _Optional[str] = ...) -> None: ...
+
+class UserRequestID(_message.Message):
+    __slots__ = ["id"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    def __init__(self, id: _Optional[str] = ...) -> None: ...
 
 class UserResponse(_message.Message):
     __slots__ = ["user_id", "username", "email", "name", "role"]
