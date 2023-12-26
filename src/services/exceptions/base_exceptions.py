@@ -38,3 +38,9 @@ class BaseExceptions:
         detail = "Login required"
         status_code = status.HTTP_401_UNAUTHORIZED
         return await tag_exception.login_required(detail, status_code)
+
+    async def not_found(self, value: str):
+        tag_exception = await self.get_exception_tag(self.tag)
+        detail = f"{value} not found"
+        status_code = status.HTTP_404_NOT_FOUND
+        return await tag_exception.not_found(detail, status_code)

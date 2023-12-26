@@ -3,11 +3,16 @@ syntax = "proto3";
 package user;
 
 service User {
-  rpc CheckUser (UserRequest) returns (UserResponse) {}
+  rpc CheckUserToken (UserRequestToken) returns (UserResponse) {}
+  rpc CheckUserID (UserRequestID) returns (UserResponse) {}
 }
 
-message UserRequest {
+message UserRequestToken {
   string token = 1;
+}
+
+message UserRequestID {
+  int64 user_id = 1;
 }
 
 message UserResponse {

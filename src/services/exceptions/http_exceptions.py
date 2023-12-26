@@ -25,3 +25,8 @@ class HTTPExceptions:
     async def login_required(detail: str, status_code: int) -> NoReturn:
         logger.info(detail)
         raise HTTPException(detail=detail, status_code=status_code)
+
+    @staticmethod
+    async def not_found(detail: str, status_code: int) -> NoReturn:
+        logger.info(detail)
+        raise HTTPException(detail=detail, status_code=status_code)
