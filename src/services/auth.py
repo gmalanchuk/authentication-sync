@@ -14,13 +14,13 @@ from src.utils.hash_password import HashPassword
 from src.utils.jwt_token import JWTToken
 
 
-class AuthService:
-    def __init__(self, tag: TagEnum) -> None:
+class AuthHTTPService:
+    def __init__(self) -> None:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
-        self.jwt_token = JWTToken(tag)
-        self.exception = BaseExceptions(tag)
+        self.jwt_token = JWTToken(TagEnum.HTTP)
+        self.exception = BaseExceptions(TagEnum.HTTP)
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:
         user_dict = user.model_dump()

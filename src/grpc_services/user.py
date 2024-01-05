@@ -2,13 +2,12 @@ import grpc
 
 from protos.user_pb2 import UserRequestID, UserRequestToken, UserResponse
 from protos.user_pb2_grpc import UserServicer
-from src.enums.tag import TagEnum
-from src.services.permission import PermissionService
+from src.services.user import UserGRPCService
 
 
 class User(UserServicer):
     def __init__(self) -> None:
-        self.permission_service = PermissionService(tag=TagEnum.GRPC)
+        self.permission_service = UserGRPCService()
 
     async def CheckUserToken(self, request: UserRequestToken, context: grpc.aio.ServicerContext) -> UserResponse:
         user_id, username, email, name, role = await self.permission_service.get_user_info_by_token(
