@@ -10,7 +10,7 @@ from src.repositories.auth import AuthRepository
 from src.services.exceptions.http_exceptions import HTTPExceptions
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
-from src.utils.jwt_token import JWTToken
+from src.utils.jwt_token import JWTHTTPToken
 
 
 class AuthHTTPService:
@@ -18,7 +18,7 @@ class AuthHTTPService:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
-        self.jwt_token = JWTToken()
+        self.jwt_token = JWTHTTPToken()
         self.http_exception = HTTPExceptions()
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:

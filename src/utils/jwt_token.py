@@ -6,7 +6,7 @@ import json
 
 from src.config import settings
 from src.repositories.base.redis import RedisRepository
-from src.services.exceptions.grpc_exceptions import GRPCExceptions
+from src.services.exceptions import GRPCExceptions, HTTPExceptions
 
 
 class JWTTokenSaveToRedis:
@@ -27,9 +27,9 @@ class JWTTokenSaveToRedis:
 
 
 class JWTToken(JWTTokenSaveToRedis):
-    def __init__(self) -> None:
+    def __init__(self, exception: type[HTTPExceptions] | type[GRPCExceptions]):
         super().__init__()
-        self.grpc_exception = GRPCExceptions()
+        self.exception = exception()
 
     async def create_token(self, user_id: int) -> str:
         header = base64.b64encode(str({"alg": "HS256", "typ": "JWT"}).encode()).decode()
@@ -61,21 +61,31 @@ class JWTToken(JWTTokenSaveToRedis):
 
     async def decode_token(self, token: str) -> dict:
         if not token:
-            return self.grpc_exception.login_required()
+            return self.exception.login_required()
 
         try:
             header, payload, signature = token.split(".")
         except ValueError:
-            return self.grpc_exception.is_invalid(value1="JWT token")
+            return self.exception.is_invalid(value1="JWT token")
 
         if not await self.verify_token(header, payload, signature):
-            return self.grpc_exception.is_invalid(value1="JWT token")
+            return self.exception.is_invalid(value1="JWT token")
 
         decoded_payload = ast.literal_eval(base64.b64decode(payload).decode())
 
         value = self.redis.get_one(name=decoded_payload["user_id"])
 
         if not value:
-            return self.grpc_exception.has_expired(value="JWT token")
+            return self.exception.has_expired(value="JWT token")
 
         return decoded_payload
+
+
+class JWTHTTPToken(JWTToken):
+    def __init__(self) -> None:
+        super().__init__(exception=HTTPExceptions)
+
+
+class JWTGRPCToken(JWTToken):
+    def __init__(self) -> None:
+        super().__init__(exception=GRPCExceptions)

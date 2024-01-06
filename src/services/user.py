@@ -1,13 +1,13 @@
 from src.repositories.user import UserRepository
 from src.services.exceptions.grpc_exceptions import GRPCExceptions
-from src.utils.jwt_token import JWTToken
+from src.utils.jwt_token import JWTGRPCToken
 
 
 class UserGRPCService:
     def __init__(self) -> None:
         self.user_repo = UserRepository()
         self.grpc_exception = GRPCExceptions()
-        self.jwt_token = JWTToken()
+        self.jwt_token = JWTGRPCToken()
 
     async def get_user_info_by_token(self, token_dict: dict) -> tuple[int, str, str, str, str]:
         payload = await self.jwt_token.decode_token(token_dict["token"])
@@ -26,3 +26,7 @@ class UserGRPCService:
             return self.grpc_exception.not_found(value="User")
 
         return user.id, user.username, user.email, user.name, user.role.value
+
+
+class UserHTTPService:
+    pass
