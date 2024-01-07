@@ -6,21 +6,20 @@ from starlette.responses import JSONResponse
 from src.api.schemas.auth.login import UserLoginRequestSchema
 from src.api.schemas.auth.registration import UserRegistrationRequestSchema, UserRegistrationResponseSchema
 from src.config import logger, settings
-from src.enums.tag import TagEnum
 from src.repositories.auth import AuthRepository
-from src.services.exceptions.base_exceptions import BaseExceptions
+from src.services.exceptions.http_exceptions import HTTPExceptions
 from src.services.validators.auth import AuthValidator
 from src.utils.hash_password import HashPassword
-from src.utils.jwt_token import JWTToken
+from src.utils.jwt_token import JWTHTTPToken
 
 
-class AuthService:
-    def __init__(self, tag: TagEnum) -> None:
+class AuthHTTPService:
+    def __init__(self) -> None:
         self.auth_repository = AuthRepository()
         self.auth_validator = AuthValidator()
         self.hash_password = HashPassword()
-        self.jwt_token = JWTToken(tag)
-        self.exception = BaseExceptions(tag)
+        self.jwt_token = JWTHTTPToken()
+        self.http_exception = HTTPExceptions()
 
     async def registration(self, user: UserRegistrationRequestSchema) -> JSONResponse:
         user_dict = user.model_dump()
@@ -60,4 +59,4 @@ class AuthService:
                 )
                 return response
 
-        return await self.exception.is_invalid(value1="email", value2="password")
+        return self.http_exception.is_invalid(value1="email", value2="password")
