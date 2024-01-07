@@ -4,9 +4,9 @@ from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
-str16 = Annotated[str, 16]
-str32 = Annotated[str, 32]
-str64 = Annotated[str, 64]
+str16 = Annotated[int, 16]
+str32 = Annotated[int, 32]
+str64 = Annotated[int, 64]
 
 
 class Base(DeclarativeBase):
