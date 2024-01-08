@@ -3,4 +3,5 @@ class EmailHTTPService:
 
 
 class EmailRabbitMQService:
-    pass
+    async def send_email(self) -> None:
+        pass

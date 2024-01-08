@@ -13,7 +13,7 @@ class StartTransaction:
         logger.info("Transaction has been opened")
         return self.session
 
-    async def __aexit__(self, *args):
+    async def __aexit__(self, *args: tuple):
         logger.info("The transaction was a rollback")
         await self.session.rollback()
         await self.session.close()
