@@ -12,5 +12,5 @@ class EmailVerification(Base, TimeStampMixin):
     __tablename__ = "email_verification"
 
     code: Mapped[UUID] = mapped_column(nullable=False, unique=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey(column="users.id", ondelete="CASCADE"), nullable=False)
     expiration: Mapped[datetime] = mapped_column(nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey(column="users.id", ondelete="CASCADE"), nullable=False)

@@ -21,7 +21,7 @@ class UserRegistrationRequestSchema(BaseModel):
 
     @field_validator("name")
     def validate_name(cls, name: str) -> str | NoReturn:
-        if len(name) > 16:
+        if len(name) > 32:
             raise HTTPException(
                 detail="Name must be less than 32 characters", status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
             )

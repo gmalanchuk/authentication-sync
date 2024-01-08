@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     FRONTEND_DOMAIN: str
     GRPC_PORT: int
 
+    EMAIL_UUID_EXPIRATION: int
+
     @property
     def SQLALCHEMY_URL(self) -> str:
         return (
