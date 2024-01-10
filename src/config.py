@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     RABBITMQ_PORT: int
 
     FRONTEND_DOMAIN: str
+    AUTHENTICATION_DOMAIN: str
+
     GRPC_PORT: int
 
     @property
