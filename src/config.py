@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     JWT_TOKEN_EXPIRES: int
 
+    EMAIL_UUID_EXPIRATION: int
+
     REDIS_HOST: str
     REDIS_PORT: int
 
@@ -20,7 +22,14 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int
     POSTGRES_HOST: str
 
+    RABBITMQ_HOST: str
+    RABBITMQ_USER: str
+    RABBITMQ_PASS: str
+    RABBITMQ_PORT: int
+
     FRONTEND_DOMAIN: str
+    AUTHENTICATION_DOMAIN: str
+
     GRPC_PORT: int
 
     @property
