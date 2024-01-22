@@ -11,6 +11,4 @@ RUN pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --no-root
 
-EXPOSE 8001
-
 COPY . .
